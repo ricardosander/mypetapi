@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/pets")
 public class PetController {
@@ -22,8 +24,11 @@ public class PetController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Pet>> findAll() {
-    List<Pet> pets = service.findAll();
+  public ResponseEntity<List<Pet>> findAll(HttpServletRequest request) {
+
+    Integer userId = Integer.valueOf(request.getSession().getAttribute("userId").toString());
+
+    List<Pet> pets = service.findAll(userId);
     return ResponseEntity.ok(pets);
   }
 

@@ -14,12 +14,16 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+  private UserService userRepository;
+
   @Autowired
-  private UserService usuarioRepository;
+  public UserController(UserService userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @GetMapping
   public ResponseEntity<List<User>> findAll() {
-    List<User> users = usuarioRepository.findAll();
+    List<User> users = userRepository.findAll();
     return ResponseEntity.ok(users);
   }
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/owners")
 public class OwnerController {
@@ -22,8 +24,11 @@ public class OwnerController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Owner>> findAll() {
-    List<Owner> owners = service.findAll();
+  public ResponseEntity<List<Owner>> findAll(HttpServletRequest request) {
+
+    Integer userId = Integer.valueOf(request.getSession().getAttribute("userId").toString());
+
+    List<Owner> owners = service.findAll(userId);
     return ResponseEntity.ok(owners);
   }
 

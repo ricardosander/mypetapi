@@ -17,8 +17,8 @@ public class OwnerService {
     this.repository = repository;
   }
 
-  public List<Owner> findAll() {
-    return repository.findAll();
+  public List<Owner> findAll(Integer userId) {
+    return repository.findAll(userId);
   }
 
 }
