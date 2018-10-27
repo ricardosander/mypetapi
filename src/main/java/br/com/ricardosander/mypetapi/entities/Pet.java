@@ -4,9 +4,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -59,8 +62,9 @@ public class Pet {
   @Column(name = "cliente_pacote", length = 50)
   private boolean bundle;
 
-  @Column(name = "cliente", length = 50)
-  private Integer owner;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cliente")
+  private Owner owner;
 
   public Pet() {
 
@@ -186,11 +190,11 @@ public class Pet {
     this.bundle = bundle;
   }
 
-  public Integer getOwner() {
+  public Owner getOwner() {
     return owner;
   }
 
-  public void setOwner(Integer owner) {
+  public void setOwner(Owner owner) {
     this.owner = owner;
   }
 
