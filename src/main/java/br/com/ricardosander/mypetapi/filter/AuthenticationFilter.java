@@ -3,6 +3,9 @@ package br.com.ricardosander.mypetapi.filter;
 import br.com.ricardosander.mypetapi.entities.Session;
 import br.com.ricardosander.mypetapi.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -42,6 +45,12 @@ public class AuthenticationFilter implements Filter {
 
     HttpServletRequest request = (HttpServletRequest) servletRequest;
 
+    if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+      filterChain.doFilter(servletRequest, servletResponse);
+      return;
+    }
+
+    System.out.println("skey=" + request.getHeader(TOKEN_NAME));
     Optional<Session> session = sessionRepository.findByToken(request.getHeader(TOKEN_NAME));
 
     if (session.isPresent()) {
@@ -51,8 +60,9 @@ public class AuthenticationFilter implements Filter {
     }
 
     HttpServletResponse response = (HttpServletResponse) servletResponse;
-    response.setStatus(401);
-    response.getWriter().append("Deny");
+    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.getWriter().append(ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body("Not Authorized").toString());
   }
 
 
