@@ -1,6 +1,6 @@
 package br.com.ricardosander.mypetapi.controllers;
 
-import br.com.ricardosander.mypetapi.entities.Pet;
+import br.com.ricardosander.mypetapi.dto.PetListDTO;
 import br.com.ricardosander.mypetapi.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +28,13 @@ public class PetController {
 
   @CrossOrigin
   @GetMapping
-  public ResponseEntity<List<Pet>> findAll(@RequestParam(required = false) Integer page,
+  public ResponseEntity<List<PetListDTO>> findAll(@RequestParam(required = false) Integer page,
       HttpServletRequest request) {
 
     Integer actualPage = page == null || page < 1 ? 0 : page - 1;
     Integer userId = Integer.valueOf(request.getSession().getAttribute("userId").toString());
 
-    List<Pet> pets = service.findAll(userId, actualPage);
+    List<PetListDTO> pets = service.findAll(userId, actualPage);
     return ResponseEntity.ok(pets);
   }
 
