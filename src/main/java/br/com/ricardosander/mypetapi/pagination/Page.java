@@ -16,11 +16,7 @@ public class Page<T> {
 
   private final Integer page;
 
-  public static Page from(org.springframework.data.domain.Page page) {
-    return new Page(page);
-  }
-
-  private Page(org.springframework.data.domain.Page page) {
+  public Page(org.springframework.data.domain.Page<T> page) {
     this.content = page.getContent();
     this.totalPages = page.getTotalPages();
     this.totalElements = page.getTotalElements();
