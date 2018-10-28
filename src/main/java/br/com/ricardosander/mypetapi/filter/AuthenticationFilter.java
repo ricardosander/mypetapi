@@ -45,6 +45,12 @@ public class AuthenticationFilter implements Filter {
 
     HttpServletRequest request = (HttpServletRequest) servletRequest;
 
+    Object userId = request.getSession().getAttribute("userId");
+    if (userId != null) {
+      filterChain.doFilter(servletRequest, servletResponse);
+      return;
+    }
+
     if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
       filterChain.doFilter(servletRequest, servletResponse);
       return;
