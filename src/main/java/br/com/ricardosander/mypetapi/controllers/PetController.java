@@ -1,5 +1,6 @@
 package br.com.ricardosander.mypetapi.controllers;
 
+import br.com.ricardosander.mypetapi.pagination.Page;
 import br.com.ricardosander.mypetapi.dto.PetListDTO;
 import br.com.ricardosander.mypetapi.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,13 +27,13 @@ public class PetController {
 
   @CrossOrigin
   @GetMapping
-  public ResponseEntity<List<PetListDTO>> findAll(@RequestParam(required = false) Integer page,
+  public ResponseEntity<Page<PetListDTO>> findAll(@RequestParam(required = false) Integer page,
       HttpServletRequest request) {
 
     Integer actualPage = page == null || page < 1 ? 0 : page - 1;
     Integer userId = Integer.valueOf(request.getSession().getAttribute("userId").toString());
 
-    List<PetListDTO> pets = service.findAll(userId, actualPage);
+    Page<PetListDTO> pets = service.findAll(userId, actualPage);
     return ResponseEntity.ok(pets);
   }
 
